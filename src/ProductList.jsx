@@ -257,6 +257,17 @@ function ProductList({ onHomeClick }) {
         zIndex: 10
     }
 
+    const styleCategoryTitle = {
+        textAlign: 'center',
+        margin: '40px 0',
+        padding: '20px 0',
+        borderTop: '2px solid #4CAF50',
+        borderBottom: '2px solid #4CAF50',
+        color: '#4CAF50',
+        fontSize: '2.5rem',
+        fontWeight: 'bold'
+    }
+    
     const handleHomeClick = (e) => {
         e.preventDefault();
         onHomeClick();
@@ -328,7 +339,7 @@ function ProductList({ onHomeClick }) {
                 <div className="product-grid">
                     {plantsArray.map((category, index) => (
                         <div key={index}>
-                            <h1>
+                            <h1 style={styleCategoryTitle}>
                                 <div>{category.category}</div>
                             </h1>
                             <div className="product-list">

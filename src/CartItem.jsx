@@ -9,27 +9,63 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+    let total = 0; // Inicializa una variable total para mantener la suma acumulativa
+    
+    // Itera sobre el array cart usando cart.forEach()
+    cart.forEach((item) => {
+      // Para cada artículo, extrae su quantity y cost
+      const quantity = item.quantity;
+      const cost = item.cost;
+      
+      // Convierte la cadena de cost (por ejemplo, "$10.00") a un número usando parseFloat(item.cost.substring(1))
+      const numericCost = parseFloat(cost.substring(1));
+      
+      // Multiplícalo por la quantity y agrega el valor resultante a total
+      total += numericCost * quantity;
+    });
+    
+    // Después de procesar todos los artículos, devuelve la suma final de total
+    return total;
   };
 
   const handleContinueShopping = (e) => {
-   
+    e.preventDefault();
+    onContinueShopping(e);
   };
 
 
 
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({
+      name: item.name,
+      quantity: item.quantity + 1
+    }));
   };
 
   const handleDecrement = (item) => {
-   
+    if (item.quantity > 1) {
+      // Si la cantidad es mayor que 1, disminuye la cantidad en 1
+      dispatch(updateQuantity({
+        name: item.name,
+        quantity: item.quantity - 1
+      }));
+    } else {
+      // Si la cantidad caería a 0, elimina el artículo del carrito
+      dispatch(removeItem(item.name));
+    }
   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    // Extrae el valor numérico de la cadena de costo usando parseFloat(item.cost.substring(1))
+    const numericCost = parseFloat(item.cost.substring(1));
+    
+    // Calcula el costo total multiplicando cantidad por precio unitario
+    return (numericCost * item.quantity).toFixed(2);
   };
 
   return (

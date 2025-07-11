@@ -299,6 +299,16 @@ function ProductList({ onHomeClick }) {
     const calculateTotalQuantity = () => {
         return cart ? cart.reduce((total, item) => total + item.quantity, 0) : 0;
     };
+
+    // Sincronizar addedToCart con el estado actual del carrito
+    useEffect(() => {
+        const currentCartItems = {};
+        cart.forEach(item => {
+            currentCartItems[item.name] = true;
+        });
+        setAddedToCart(currentCartItems);
+    }, [cart]);
+    
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -356,8 +366,15 @@ function ProductList({ onHomeClick }) {
                                     <button
                                         className="product-button"
                                         onClick={() => handleAddToCart(plant)}
+                                        disabled={addedToCart[plant.name]}
+                                        style={{
+                                            backgroundColor: addedToCart[plant.name] ? '#cccccc' : '#4CAF50',
+                                            color: addedToCart[plant.name] ? '#666666' : 'white',
+                                            cursor: addedToCart[plant.name] ? 'not-allowed' : 'pointer',
+                                            opacity: addedToCart[plant.name] ? 0.6 : 1
+                                        }}
                                     >
-                                        Add to Cart
+                                        {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
                                     </button>
                                     </div>
                                 ))}
